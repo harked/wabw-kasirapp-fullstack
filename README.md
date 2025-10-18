@@ -231,15 +231,3 @@ node server.js
 1. Start JSON Server: `npm run server`
 2. Start React app: `npm start`
 3. Or run both: `npm run dev`
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test both frontend and backend
-5. Submit a pull request
-
-## License
-
-[Add your license here]
