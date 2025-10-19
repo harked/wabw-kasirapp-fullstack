@@ -31,135 +31,66 @@ kasirapp/
 ## Prerequisites
 
 - Node.js (recommended: v16 or v18)
-- npm or yarn
+- npm
 
-## Backend Setup (JSON Server)
+## Quick Start
 
-This project uses JSON Server to create a REST API from a JSON file.
-
-### Step 1: Install JSON Server
+### 1. Install Dependencies
 
 ```bash
-# Install json-server globally
-npm install -g json-server
-
-# Or install as dev dependency
-npm install --save-dev json-server
+npm install
 ```
 
-### Step 2: Move db.json to Root Directory
-
-Ensure your `db.json` file is in the project root directory:
+### 2. Run the Application
 
 ```bash
-mv src/db.json ./db.json
-```
-
-### Step 3: Update package.json Scripts
-
-Add these scripts to your `package.json`:
-
-```json
-{
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "json-server --watch db.json --port 3004",
-    "dev": "concurrently \"npm run server\" \"npm start\""
-  },
-  "devDependencies": {
-    "json-server": "^0.17.4",
-    "concurrently": "^8.2.2"
-  }
-}
-```
-
-### Step 4: Install Concurrently (Optional)
-
-To run both frontend and backend simultaneously:
-
-```bash
-npm install --save-dev concurrently
-```
-
-### Step 5: Start the Backend Server
-
-Choose one of these options:
-
-```bash
-# Option 1: Start JSON server only
-npm run server
-
-# Option 2: Start both backend and frontend
 npm run dev
-
-# Option 3: Manual start
-json-server --watch db.json --port 3004
 ```
 
-### Step 6: API Endpoints
+This will start both the backend (JSON Server on port 3004) and frontend (React on port 3000) simultaneously.
 
-Your API will be available at `http://localhost:3004/` with these endpoints:
+The application will be available at:
+- **Frontend**: `http://localhost:3000`
+- **Backend API**: `http://localhost:3004`
+
+## API Endpoints
+
+The JSON Server backend provides these REST API endpoints:
 
 - **Categories**: `GET http://localhost:3004/categories`
 - **Products**: `GET http://localhost:3004/products`
-- **Cart Items**: `GET/POST http://localhost:3004/keranjangs`
+- **Cart Items**: `GET/POST/PUT/DELETE http://localhost:3004/keranjangs`
 - **Orders**: `GET/POST http://localhost:3004/pesanans`
 
-### Step 7: Test API Endpoints
+## Alternative Commands
 
 ```bash
-# Get all products
-curl http://localhost:3004/products
+# Start backend only (JSON Server)
+npm run server
 
-# Get products by category
-curl http://localhost:3004/products?category.id=1
-
-# Get all categories
-curl http://localhost:3004/categories
-```
-
-## Frontend Setup
-
-### Step 1: Install Dependencies
-
-```bash
-npm install
-```
-
-### Step 2: Node.js Version Compatibility
-
-If you encounter OpenSSL errors with Node.js v22+, use one of these solutions:
-
-**Option A: Use Legacy OpenSSL Provider**
-```bash
-export NODE_OPTIONS="--openssl-legacy-provider"
+# Start frontend only (React)
 npm start
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
 ```
 
-**Option B: Use Node.js v18 (Recommended)**
-```bash
-# Install nvm if you don't have it
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+## Node.js Version Compatibility
 
+This project uses `react-scripts@3.4.3` which requires the OpenSSL legacy provider for Node.js v17+. The scripts are already configured with `NODE_OPTIONS=--openssl-legacy-provider`.
+
+**Recommended:** Use Node.js v16 or v18 for best compatibility.
+
+If you encounter OpenSSL errors with Node.js v22+:
+```bash
 # Install and use Node.js 18
 nvm install 18
 nvm use 18
-
-# Clear and reinstall dependencies
-rm -rf node_modules package-lock.json
 npm install
 ```
-
-### Step 3: Start Development Server
-
-```bash
-npm start
-```
-
-The application will be available at `http://localhost:3000`
 
 ## Alternative Backend Setup (Express Server)
 
@@ -226,8 +157,6 @@ node server.js
    - Check that JSON Server is running on port 3004
    - Confirm `constants.js` has correct API_URL
 
-### Development Workflow
+## Development Workflow
 
-1. Start JSON Server: `npm run server`
-2. Start React app: `npm start`
-3. Or run both: `npm run dev`
+The easiest way to develop is to run `npm run dev` which starts both the backend and frontend together. The app will automatically reload when you make changes to the code.
