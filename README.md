@@ -10,13 +10,17 @@ kasirapp/
 │   ├── assets/
 │   │   └── images/          # Menu item images (foods, drinks, snacks)
 │   └── index.html
-├── server/                  # Hapi server (REST API + file-backed storage)
+├── server/
+│   ├── dataStore.js         # PostgreSQL-backed data access helpers
+│   ├── db.js                # Database connection pool
+│   ├── schema.sql           # Database schema definition
+│   └── seed.sql             # Sample data for development
 ├── src/
 │   ├── components/          # Reusable UI components
 │   ├── pages/              # Page-level components
 │   ├── utils/              # Utility functions and constants
 │   └── App.js
-├── db.json                 # Backend data (persisted to disk by the Hapi server)
+├── db.json                 # Legacy sample data (reference only)
 ├── package.json
 └── README.md
 ```
@@ -33,6 +37,27 @@ kasirapp/
 
 - Node.js (recommended: v16 or v18)
 - npm
+- PostgreSQL 13+ (local or hosted)
+
+## Database Setup
+
+1. Create a PostgreSQL database (e.g. `kasirapp`):
+   ```bash
+   createdb kasirapp
+   ```
+
+2. Apply the schema and sample seed data:
+   ```bash
+   psql -d kasirapp -f server/schema.sql
+   psql -d kasirapp -f server/seed.sql
+   ```
+
+3. Copy `.env.example` to `.env` and adjust the connection settings:
+   ```bash
+   cp .env.example .env
+   ```
+
+   Alternatively, set the standard PostgreSQL env vars (`PGHOST`, `PGUSER`, etc.) or `DATABASE_URL` in your shell.
 
 ## Quick Start
 
@@ -56,7 +81,7 @@ The application will be available at:
 
 ## API Endpoints
 
-The Hapi backend exposes these REST API endpoints:
+The Hapi + PostgreSQL backend exposes these REST API endpoints:
 
 - **Categories**: `GET http://localhost:3004/categories`
 - **Products**: `GET http://localhost:3004/products`
@@ -154,7 +179,8 @@ node server.js
    - For Express server, ensure `cors()` middleware is included
 
 3. **API endpoints not found**
-   - Verify `db.json` is in the root directory
+   - Verify the PostgreSQL database is running and accessible
+   - Confirm the schema has been applied (`server/schema.sql`)
    - Check that the Hapi backend is running on port 3004
    - Confirm `constants.js` has correct API_URL
 
