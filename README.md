@@ -10,12 +10,13 @@ kasirapp/
 │   ├── assets/
 │   │   └── images/          # Menu item images (foods, drinks, snacks)
 │   └── index.html
+├── server/                  # Hapi server (REST API + file-backed storage)
 ├── src/
 │   ├── components/          # Reusable UI components
 │   ├── pages/              # Page-level components
 │   ├── utils/              # Utility functions and constants
 │   └── App.js
-├── db.json                 # Backend data (JSON Server)
+├── db.json                 # Backend data (persisted to disk by the Hapi server)
 ├── package.json
 └── README.md
 ```
@@ -47,7 +48,7 @@ npm install
 npm run dev
 ```
 
-This will start both the backend (JSON Server on port 3004) and frontend (React on port 3000) simultaneously.
+This starts both the Hapi backend (port `3004`) and the React frontend (port `3000`) simultaneously.
 
 The application will be available at:
 - **Frontend**: `http://localhost:3000`
@@ -55,7 +56,7 @@ The application will be available at:
 
 ## API Endpoints
 
-The JSON Server backend provides these REST API endpoints:
+The Hapi backend exposes these REST API endpoints:
 
 - **Categories**: `GET http://localhost:3004/categories`
 - **Products**: `GET http://localhost:3004/products`
@@ -65,7 +66,7 @@ The JSON Server backend provides these REST API endpoints:
 ## Alternative Commands
 
 ```bash
-# Start backend only (JSON Server)
+# Start backend only (Hapi)
 npm run server
 
 # Start frontend only (React)
@@ -94,7 +95,7 @@ npm install
 
 ## Alternative Backend Setup (Express Server)
 
-For a more robust backend solution, create an Express server:
+If you prefer Express instead of Hapi, you can create an alternative server:
 
 ### Step 1: Install Express Dependencies
 
@@ -149,12 +150,12 @@ node server.js
    ```
 
 2. **CORS errors**
-   - JSON Server enables CORS by default
+   - Hapi CORS is enabled in `server/index.js`
    - For Express server, ensure `cors()` middleware is included
 
 3. **API endpoints not found**
    - Verify `db.json` is in the root directory
-   - Check that JSON Server is running on port 3004
+   - Check that the Hapi backend is running on port 3004
    - Confirm `constants.js` has correct API_URL
 
 ## Development Workflow
