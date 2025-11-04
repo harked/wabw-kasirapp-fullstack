@@ -82,6 +82,9 @@ export default class Hasil extends Component {
           button: false,
           timer: 1500,
         });
+        if (this.props.refreshKeranjangs) {
+          this.props.refreshKeranjangs();
+        }
       })
       .catch((error) => {
         console.log("Error yaa ", error);
@@ -102,6 +105,9 @@ export default class Hasil extends Component {
           button: false,
           timer: 1500,
         });
+        if (this.props.refreshKeranjangs) {
+          this.props.refreshKeranjangs();
+        }
       })
       .catch((error) => {
         console.log("Error yaa ", error);

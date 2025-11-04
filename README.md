@@ -10,12 +10,17 @@ kasirapp/
 │   ├── assets/
 │   │   └── images/          # Menu item images (foods, drinks, snacks)
 │   └── index.html
+├── server/
+│   ├── dataStore.js         # PostgreSQL-backed data access helpers
+│   ├── db.js                # Database connection pool
+│   ├── schema.sql           # Database schema definition
+│   └── seed.sql             # Sample data for development
 ├── src/
 │   ├── components/          # Reusable UI components
 │   ├── pages/              # Page-level components
 │   ├── utils/              # Utility functions and constants
 │   └── App.js
-├── db.json                 # Backend data (JSON Server)
+├── db.json                 # Legacy sample data (reference only)
 ├── package.json
 └── README.md
 ```
@@ -32,6 +37,27 @@ kasirapp/
 
 - Node.js (recommended: v16 or v18)
 - npm
+- PostgreSQL 13+ (local or hosted)
+
+## Database Setup
+
+1. Create a PostgreSQL database (e.g. `kasirapp`):
+   ```bash
+   createdb kasirapp
+   ```
+
+2. Apply the schema and sample seed data:
+   ```bash
+   psql -d kasirapp -f server/schema.sql
+   psql -d kasirapp -f server/seed.sql
+   ```
+
+3. Copy `.env.example` to `.env` and adjust the connection settings:
+   ```bash
+   cp .env.example .env
+   ```
+
+   Alternatively, set the standard PostgreSQL env vars (`PGHOST`, `PGUSER`, etc.) or `DATABASE_URL` in your shell.
 
 ## Quick Start
 
@@ -47,7 +73,7 @@ npm install
 npm run dev
 ```
 
-This will start both the backend (JSON Server on port 3004) and frontend (React on port 3000) simultaneously.
+This starts both the Hapi backend (port `3004`) and the React frontend (port `3000`) simultaneously.
 
 The application will be available at:
 - **Frontend**: `http://localhost:3000`
@@ -55,7 +81,7 @@ The application will be available at:
 
 ## API Endpoints
 
-The JSON Server backend provides these REST API endpoints:
+The Hapi + PostgreSQL backend exposes these REST API endpoints:
 
 - **Categories**: `GET http://localhost:3004/categories`
 - **Products**: `GET http://localhost:3004/products`
@@ -65,7 +91,7 @@ The JSON Server backend provides these REST API endpoints:
 ## Alternative Commands
 
 ```bash
-# Start backend only (JSON Server)
+# Start backend only (Hapi)
 npm run server
 
 # Start frontend only (React)
@@ -94,7 +120,7 @@ npm install
 
 ## Alternative Backend Setup (Express Server)
 
-For a more robust backend solution, create an Express server:
+If you prefer Express instead of Hapi, you can create an alternative server:
 
 ### Step 1: Install Express Dependencies
 
@@ -149,12 +175,13 @@ node server.js
    ```
 
 2. **CORS errors**
-   - JSON Server enables CORS by default
+   - Hapi CORS is enabled in `server/index.js`
    - For Express server, ensure `cors()` middleware is included
 
 3. **API endpoints not found**
-   - Verify `db.json` is in the root directory
-   - Check that JSON Server is running on port 3004
+   - Verify the PostgreSQL database is running and accessible
+   - Confirm the schema has been applied (`server/schema.sql`)
+   - Check that the Hapi backend is running on port 3004
    - Confirm `constants.js` has correct API_URL
 
 ## Development Workflow

@@ -17,8 +17,13 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
+    this.getMenus(this.state.categoriYangDipilih);
+    this.getKeranjangs();
+  }
+
+  getMenus = (category) => {
     axios
-      .get(API_URL + "products?category.nama=" + this.state.categoriYangDipilih)
+      .get(API_URL + "products?category.nama=" + category)
       .then((res) => {
         const menus = res.data;
         this.setState({ menus });
@@ -26,7 +31,9 @@ export default class Home extends Component {
       .catch((error) => {
         console.log("Error yaa ", error);
       });
+  };
 
+  getKeranjangs = () => {
     axios
       .get(API_URL + "keranjangs")
       .then((res) => {
@@ -36,21 +43,7 @@ export default class Home extends Component {
       .catch((error) => {
         console.log("Error yaa ", error);
       });
-  }
-
-  componentDidUpdate(prevState) {
-    if(this.state.keranjangs !== prevState.keranjangs) {
-      axios
-      .get(API_URL + "keranjangs")
-      .then((res) => {
-        const keranjangs = res.data;
-        this.setState({ keranjangs });
-      })
-      .catch((error) => {
-        console.log("Error yaa ", error);
-      });
-    }
-  }
+  };
 
   changeCategory = (value) => {
     this.setState({
@@ -58,15 +51,7 @@ export default class Home extends Component {
       menus: [],
     });
 
-    axios
-      .get(API_URL + "products?category.nama=" + value)
-      .then((res) => {
-        const menus = res.data;
-        this.setState({ menus });
-      })
-      .catch((error) => {
-        console.log("Error yaa ", error);
-      });
+    this.getMenus(value);
   };
 
   masukKeranjang = (value) => {
@@ -90,6 +75,7 @@ export default class Home extends Component {
                 button: false,
                 timer: 1500,
               });
+              this.getKeranjangs();
             })
             .catch((error) => {
               console.log("Error yaa ", error);
@@ -111,6 +97,7 @@ export default class Home extends Component {
                 button: false,
                 timer: 1500,
               });
+              this.getKeranjangs();
             })
             .catch((error) => {
               console.log("Error yaa ", error);
@@ -148,7 +135,7 @@ export default class Home extends Component {
                     ))}
                 </Row>
               </Col>
-              <Hasil keranjangs={keranjangs} {...this.props}/>
+              <Hasil keranjangs={keranjangs} refreshKeranjangs={this.getKeranjangs} {...this.props}/>
             </Row>
           </Container>
         </div>
