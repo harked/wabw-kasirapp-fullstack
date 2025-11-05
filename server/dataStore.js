@@ -1,5 +1,13 @@
+// Data Access Layer
+// Contains all SQL queries and database logic
 const db = require('./db');
 
+/** 
+ * Mapping functions transform SQL results into nested JSON
+ * - mapProductRow: Adds category object to products
+ * - mapKeranjangRow: Adds full product details to cart items
+ * - mapPesananRows: Groups order items into menus array
+ */
 const mapProductRow = (row) => ({
   id: row.id,
   kode: row.kode,
@@ -79,6 +87,13 @@ const init = async () => {
   await db.query('SELECT 1');
 };
 
+/**
+ * CRUD operations for each entity:
+ * - Categories: getCategories()
+ * - Products: getProducts(categoryName)
+ * - Cart: getKeranjangs(), addKeranjang(), updateKeranjang(), deleteKeranjang()
+ * - Orders: getPesanans(), addPesanan() (uses transactions)
+ */
 const getCategories = async () => {
   const { rows } = await db.query(
     'SELECT id, nama FROM categories ORDER BY id ASC',
@@ -288,6 +303,8 @@ const getPesanans = async () => {
   return mapPesananRows(rows);
 };
 
+// Transaction handling: The addPesanan function uses BEGIN/COMMIT/ROLLBACK 
+// to ensure order + items are created atomically
 const addPesanan = async (pesanan) => {
   const client = await db.getClient();
 
