@@ -1,3 +1,16 @@
+/**
+ * Database Connection
+ * Manages PostgreSQL connection pool using the pg library
+ *  - Loads environment variables from .env file
+ *  - Supports multiple connection methods:
+ *    - Individual variables: PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE
+ *    - Connection string: DATABASE_URL
+ *    - Optional SSL configuration
+ *  - Exports two functions:
+ *    - query(text, params): For simple queries
+ *    - getClient(): For transactions (used in order creation)
+*/
+
 const { Pool } = require('pg');
 const path = require('path');
 
@@ -12,7 +25,6 @@ const loadEnv = () => {
     // dotenv is optional; ignore if it's not installed
   }
 };
-
 loadEnv();
 
 const pool = new Pool({

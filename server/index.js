@@ -1,3 +1,15 @@
+/**
+ * Main Backend Entry Point
+ * 
+ * Creates and configures the Hapi.js server on port 3004
+ * Sets up CORS to allow frontend requests from any origin
+ * Defines all REST API routes:
+ *   - Categories, products, cart (keranjangs), and orders (pesanans)
+ * Handles HTTP methods: GET, POST, PUT, DELETE
+ * Includes request validation and error handling using Boom
+ * Exports createServer and startServer functions
+ */
+
 const Hapi = require('@hapi/hapi');
 const Boom = require('@hapi/boom');
 const {
